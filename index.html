@@ -15,125 +15,14 @@
             width: 100%;
             height: 100%;
             border: none;
-            pointer-events: auto;
-            z-index: 10;
-            position: relative;
-        }
-        .error-message {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            color: red;
-            font-family: Arial, sans-serif;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        #installButton {
-            display: none;
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #4fa9a5;
-            color: white;
-            font-size: 18px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <iframe 
         id="appIframe"
-        src="https://script.google.com/macros/s/AKfycbyUL-OJWQSYy1o1GxlNDhum9BH4jKcUx3Iv_1i-wFQ-gpsZpRKZvgXPrjt1NdfTT8srRw/exec"
-        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads allow-storage-access-by-user-activation allow-top-navigation allow-top-navigation-by-user-activation">
-    </iframe>
-    <div id="errorMessage" class="error-message">
-        tu navegador tiene problemas para cargar la aplicación.<br>
-        Puedes instalar la aplicación para usarla directamente.
-    </div>
-    <button id="installButton">Instalar Aplicación</button>
-
+        src="https://script.google.com/macros/s/AKfycbyUL-OJWQSYy1o1GxlNDhum9BH4jKcUx3Iv_1i-wFQ-gpsZpRKZvgXPrjt1NdfTT8srRw/exec">
     <script>
-        let deferredPrompt;
-        const installButton = document.getElementById('installButton');
-        const iframe = document.getElementById('appIframe');
-        const errorMessage = document.getElementById('errorMessage');
-
-        // Detectar si el navegador es Chrome en móvil
-        const isChromeMobile = /Chrome\/[0-9.]+ Mobile/i.test(navigator.userAgent);
-
-        if (isChromeMobile) {
-            console.log("Chrome móvil detectado.");
-        } else {
-            // Manejar el iframe
-            iframe.addEventListener('load', () => {
-                console.log("Iframe principal cargado correctamente.");
-
-                try {
-                    // Intenta habilitar las interacciones dentro del iframe
-                    const iframeWindow = iframe.contentWindow || iframe.contentDocument;
-
-                    // Si hay restricciones cross-origin, esto puede fallar
-                    if (iframeWindow) {
-                        // Habilita pointer-events para asegurar que los clics funcionan
-                        iframe.style.pointerEvents = 'auto';
-
-                        // Asegura que el contenido no esté bloqueado
-                        const iframeDocument = iframeWindow.document;
-                        if (iframeDocument) {
-                            console.log("Documento interno del iframe detectado.");
-                            const body = iframeDocument.body;
-                            if (body) {
-                                body.style.pointerEvents = 'auto';
-                                body.style.userSelect = 'auto';
-                                console.log("Interacciones dentro del iframe habilitadas.");
-                            }
-                        }
-                    }
-                } catch (err) {
-                    console.warn("No se puede acceder al contenido del iframe debido a restricciones cross-origin:", err);
-                }
-            });
-
-            iframe.addEventListener('error', () => {
-                console.error('Error al cargar el iframe principal.');
-                iframe.style.display = 'none'; // Ocultar el iframe
-                errorMessage.style.display = 'flex'; // Mostrar el mensaje de error
-                installButton.style.display = 'block'; // Mostrar el botón de instalación
-            });
-        }
-
-        // Registrar el evento "beforeinstallprompt"
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installButton.style.display = 'block';
-        });
-
-        // Manejar el clic en el botón de instalación
-        installButton.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const choiceResult = await deferredPrompt.userChoice;
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('El usuario aceptó instalar la aplicación.');
-                } else {
-                    console.log('El usuario rechazó instalar la aplicación.');
-                }
-                deferredPrompt = null;
-            }
-        });
-
         // Registrar el Service Worker
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker
