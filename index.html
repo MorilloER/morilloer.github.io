@@ -1,37 +1,32 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+<head>
     <title>Gestor de Inventarios</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <div class="header">
-      <div class="header-logo">
-        <img src="logo.png" alt="Logo">
-      </div>
-      <div class="header-title">Gestor de Inventarios</div>
-      <div class="delegation-title" id="delegation-title">Selecciona Delegación</div>
-    </div>
-
-    <div class="delegation-selection">
-      <select id="delegation-select" onchange="loadData()">
-        <option value="barcelona">Barcelona</option>
-        <option value="madrid">Madrid</option>
-      </select>
-      <button onclick="loadData()">Cargar Inventario</button>
-    </div>
-
-    <div id="inventory-container" class="container">
-      <!-- Los inventarios se cargarán aquí -->
-    </div>
-
-    <div class="footer">
-      <button id="reset-filters" onclick="resetFilters()">Resetear Filtros</button>
-      <input type="text" id="search" placeholder="Buscar">
-    </div>
-
-    <script src="script.js"></script>
-  </body>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4fa9a5">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <iframe src="https://script.google.com/macros/s/AKfycbyUL-OJWQSYy1o1GxlNDhum9BH4jKcUx3Iv_1i-wFQ-gpsZpRKZvgXPrjt1NdfTT8srRw/exec"></iframe>
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+                .register("/sw.js")
+                .then(() => console.log("Service Worker registrado"))
+                .catch((error) => console.error("Error al registrar el Service Worker:", error));
+        }
+    </script>
+</body>
 </html>

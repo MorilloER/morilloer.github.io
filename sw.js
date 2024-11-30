@@ -1,24 +1,22 @@
-
-self.addEventListener('install', function(event) {
-    event.waitUntil(
-        caches.open('static-v1').then(function(cache) {
-            return cache.addAll([
-                './',
-                './index.html',
-                './styles.css',
-                './script.js',
-                './manifest.json',
-                './icon-192x192.png',
-                './icon-512x512.png'
-            ]);
-        })
-    );
+self.addEventListener("install", (event) => {
+  console.log("Service Worker instalado");
+  event.waitUntil(
+    caches.open("pwa-cache").then((cache) => {
+      return cache.addAll([
+        "/", // Carga la página principal
+        "/index.html", // Carga el archivo HTML
+        "/manifest.json", // Carga el manifiesto
+        "/icon-192x192.png", // Ícono 192x192
+        "/icon-512x512.png", // Ícono 512x512
+      ]);
+    })
+  );
 });
 
-self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        caches.match(event.request).then(function(response) {
-            return response || fetch(event.request);
-        })
-    );
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
 });
