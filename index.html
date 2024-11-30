@@ -55,15 +55,16 @@
                 .catch((error) => console.error('Error al registrar el Service Worker:', error));
         }
 
-        // Simular la carga de contenido inicial desde script.js
+        // Inicializar la aplicación
         document.addEventListener('DOMContentLoaded', () => {
             const app = document.getElementById('app');
             app.innerHTML = `
                 <h1>Gestor de Inventarios</h1>
                 <p>La aplicación está lista para ser utilizada.</p>
-                <button onclick="alert('Funcionalidad aún por implementar')">Iniciar</button>
+                <button onclick="initializeApp()">Iniciar</button>
             `;
         });
     </script>
 </body>
 </html>
+
