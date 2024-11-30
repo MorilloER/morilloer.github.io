@@ -44,3 +44,29 @@ function mostrarInventario() {
         </ul>
     `;
 }
+
+
+
+function initializeApp() {
+    fetch('./inventarios.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No se pudieron cargar los datos del inventario.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Inventario cargado:', data);
+            document.getElementById('app').innerHTML = `
+                <h1>Inventario</h1>
+                <ul>${data.map(item => `<li>${item.Referencia} - ${item.Descripcion} (${item.Localizacion})</li>`).join('')}</ul>
+            `;
+        })
+        .catch(error => {
+            document.getElementById('app').innerHTML = `
+                <h1>Error</h1>
+                <p>No se pudieron cargar los datos. Inténtalo más tarde.</p>
+            `;
+            console.error('Error cargando inventario:', error);
+        });
+}
