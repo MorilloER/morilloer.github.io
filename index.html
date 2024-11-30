@@ -52,17 +52,59 @@
         button:hover {
             background-color: #3b8f89;
         }
+
+        .inventory-container {
+            margin-top: 20px;
+            max-width: 800px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4fa9a5;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div id="app">
         <h1>Gestor de Inventarios</h1>
         <p class="loading">Cargando la aplicación, por favor espera...</p>
+        <div id="inventoryContainer" class="inventory-container">
+            <h2>Inventario</h2>
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>Referencia</th>
+                        <th>Descripción</th>
+                        <th>Stock</th>
+                        <th>Localización</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los datos se agregarán dinámicamente aquí -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script src="script.js"></script>
     <script>
-        // Registrar el Service Worker para habilitar la instalación como app
+        // Registrar el Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker
                 .register('sw.js')
@@ -83,6 +125,58 @@
             const startButton = document.getElementById('startButton');
             startButton.addEventListener('click', initializeApp);
         });
+
+        function initializeApp() {
+            fetch('inventarios.json')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Inventario cargado:', data);
+
+                    // Mostrar botón para mostrar inventario
+                    const app = document.getElementById('app');
+                    app.innerHTML = `
+                        <h1>Gestor de Inventarios</h1>
+                        <p>Inventario cargado con éxito. Selecciona una opción para continuar.</p>
+                        <button id="showInventoryButton">Mostrar Inventario</button>
+                    `;
+
+                    // Mostrar datos del inventario al pulsar el botón
+                    const showInventoryButton = document.getElementById('showInventoryButton');
+                    showInventoryButton.addEventListener('click', () => showInventory(data));
+                })
+                .catch(error => {
+                    console.error('Error al cargar el inventario:', error);
+                    const app = document.getElementById('app');
+                    app.innerHTML = `
+                        <h1>Error</h1>
+                        <p>No se pudieron cargar los datos. Inténtalo más tarde.</p>
+                    `;
+                });
+        }
+
+        function showInventory(data) {
+            const inventoryContainer = document.getElementById('inventoryContainer');
+            const inventoryTableBody = document.getElementById('inventoryTable').querySelector('tbody');
+
+            // Limpiar cualquier contenido previo
+            inventoryTableBody.innerHTML = '';
+
+            // Agregar filas con los datos
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.Referencia}</td>
+                    <td>${item.Descripcion}</td>
+                    <td>${item.Stock}</td>
+                    <td>${item.Localizacion || 'N/A'}</td>
+                `;
+                inventoryTableBody.appendChild(row);
+            });
+
+            // Mostrar el contenedor del inventario
+            inventoryContainer.style.display = 'block';
+        }
     </script>
 </body>
 </html>
+
