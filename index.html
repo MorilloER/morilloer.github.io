@@ -19,14 +19,56 @@
             z-index: 10;
             position: relative;
         }
+        .error-message {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            color: red;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-<iframe 
-    src="https://script.google.com/macros/s/AKfycbyUL-OJWQSYy1o1GxlNDhum9BH4jKcUx3Iv_1i-wFQ-gpsZpRKZvgXPrjt1NdfTT8srRw/exec">
-</iframe>
+    <iframe 
+        id="appIframe"
+        src="https://script.google.com/macros/s/AKfycbyUL-OJWQSYy1o1GxlNDhum9BH4jKcUx3Iv_1i-wFQ-gpsZpRKZvgXPrjt1NdfTT8srRw/exec"
+        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-top-navigation-by-user-activation">
+    </iframe>
+    <div id="errorMessage" class="error-message">
+        Parece que tu navegador tiene problemas para cargar la aplicación.<br>
+        <a href="https://script.google.com/macros/s/AKfycbyUL-OJWQSYy1o1GxlNDhum9BH4jKcUx3Iv_1i-wFQ-gpsZpRKZvgXPrjt1NdfTT8srRw/exec" target="_blank">
+            Haz clic aquí para abrirla directamente.
+        </a>
+    </div>
 
     <script>
+        // Comprobación básica del iframe en navegadores móviles
+        const iframe = document.getElementById('appIframe');
+        const errorMessage = document.getElementById('errorMessage');
+
+        iframe.addEventListener('load', () => {
+            try {
+                // Prueba básica para verificar que el iframe es accesible
+                const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                if (!iframeDocument) {
+                    throw new Error("No se puede acceder al iframe.");
+                }
+            } catch (err) {
+                console.error("Error al cargar el iframe:", err);
+                iframe.style.display = 'none'; // Oculta el iframe si hay un problema
+                errorMessage.style.display = 'flex'; // Muestra el mensaje de error
+            }
+        });
+
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker
                 .register("/sw.js")
@@ -36,3 +78,4 @@
     </script>
 </body>
 </html>
+
