@@ -1,0 +1,139 @@
+/* Estilos globales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Encabezado */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #00bcd4;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.header-logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Selección de delegación y tipo */
+.delegation-selection {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.delegation-selection select,
+.delegation-selection button {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.delegation-selection button {
+  background-color: #00bcd4;
+  color: white;
+  cursor: pointer;
+}
+
+.delegation-selection button:hover {
+  background-color: #008c9e;
+}
+
+/* Lista de inventarios */
+#inventory-container {
+  margin-top: 20px;
+}
+
+.item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item .row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+}
+
+.item .description,
+.item .location,
+.item .family {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.item .reference {
+  font-weight: bold;
+}
+
+.item .stock {
+  color: green;
+}
+
+.item .description {
+  font-style: italic;
+}
+
+/* Pie de página */
+.footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.footer select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Estilos para el modo de pantalla completa */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .delegation-selection {
+    flex-direction: column;
+  }
+
+  .item .row {
+    flex-direction: column;
+    align-items: center;
+  }
+}
