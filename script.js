@@ -1,46 +1,60 @@
-async function initializeApp() {
-    const app = document.getElementById("app");
-
-    try {
-        const response = await fetch("inventarios.json");
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        app.innerHTML = `
-            <h1>Gestor de Inventarios</h1>
-            <p>Inventario cargado con éxito. Selecciona una opción para continuar.</p>
-            <button onclick="mostrarInventario()">Mostrar Inventario</button>
-        `;
-
-        // Guarda los datos en una variable global si es necesario
-        window.inventarios = data;
-    } catch (error) {
-        console.error("Error al cargar el archivo JSON:", error);
-        app.innerHTML = `
-            <h1>Error</h1>
-            <p>No se pudieron cargar los datos. Inténtalo más tarde.</p>
-        `;
-    }
+function initializeApp() {
+    fetch('inventarios.json')
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('No se pudo cargar el archivo de inventario.');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log('Datos cargados:', data);
+            localStorage.setItem('inventarios', JSON.stringify(data)); // Guardar en localStorage para uso posterior
+            document.querySelector('#mostrarInventario').addEventListener('click', () => {
+                renderInventario(data);
+            });
+        })
+        .catch((error) => {
+            console.error('Error al cargar el inventario:', error);
+            document.getElementById('app').innerHTML = `
+                <h1>Error</h1>
+                <p>No se pudieron cargar los datos. Inténtalo más tarde.</p>
+            `;
+        });
 }
 
-function mostrarInventario() {
-    const app = document.getElementById("app");
-    const inventarios = window.inventarios || [];
+function renderInventario(data) {
+    const app = document.getElementById('app');
+    app.innerHTML = '<h1>Inventario</h1>';
 
-    if (inventarios.length === 0) {
-        app.innerHTML = `
-            <h1>Error</h1>
-            <p>No hay datos disponibles para mostrar.</p>
-        `;
-        return;
-    }
+    const table = document.createElement('table');
+    table.style.width = '100%';
+    table.border = '1';
 
-    app.innerHTML = `
-        <h1>Inventario</h1>
-        <ul>
-            ${inventarios.map(item => `<li>${item.nombre} - ${item.cantidad}</li>`).join("")}
-        </ul>
-    `;
+    // Crear encabezados de la tabla
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    ['ID', 'Referencia', 'Descripción', 'Stock', 'Localización'].forEach((header) => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // Crear filas con los datos del inventario
+    const tbody = document.createElement('tbody');
+    data.forEach((item) => {
+        const row = document.createElement('tr');
+        ['Id', 'Referencia', 'Descripcion', 'Stock', 'Localizacion'].forEach((key) => {
+            const cell = document.createElement('td');
+            cell.textContent = item[key] || '-';
+            row.appendChild(cell);
+        });
+        tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+
+    app.appendChild(table);
 }
+
+document.addEventListener('DOMContentLoaded', initializeApp);
