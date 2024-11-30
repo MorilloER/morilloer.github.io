@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gestor de Recambios</title>
+    <title>Gestor de Inventarios</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4CAF50">
     <style>
-        /* Ajustar el iframe para que ocupe toda la pantalla */
         body, html {
             margin: 0;
             padding: 0;
@@ -17,20 +18,14 @@
     </style>
 </head>
 <body>
-    <iframe id="myFrame" src="https://script.google.com/macros/s/AKfycbyUL-OJWQSYy1o1GxlNDhum9BH4jKcUx3Iv_1i-wFQ-gpsZpRKZvgXPrjt1NdfTT8srRw/exec" style="width: 100%; height: 100%; border: none;"></iframe>
+    <iframe src="https://morilloer.github.io"></iframe>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const iframe = document.getElementById("myFrame");
-            iframe.onload = function () {
-                try {
-                    const iframeDoc = iframe.contentWindow.document;
-                    const banner = iframeDoc.querySelector('#warning'); // Ajustar si el ID es diferente
-                    if (banner) banner.remove(); // Elimina el banner directamente
-                } catch (e) {
-                    console.warn("No se pudo acceder al contenido del iframe:", e);
-                }
-            };
-        });
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+                .register("/sw.js")
+                .then(() => console.log("Service Worker registrado"))
+                .catch((error) => console.error("Error al registrar el Service Worker:", error));
+        }
     </script>
 </body>
 </html>
