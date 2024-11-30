@@ -4,35 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de Inventarios</title>
-    <link rel="icon" href="favicon.ico">
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <div class="header">
       <div class="header-logo">
-        <img src="icons/icon-192x192.png" alt="Logo">
+        <img src="logo.png" alt="Logo">
       </div>
       <div class="header-title">Gestor de Inventarios</div>
+      <div class="delegation-title" id="delegation-title">Selecciona Delegación</div>
     </div>
-    
+
     <div class="delegation-selection">
-      <select id="delegation-select">
+      <select id="delegation-select" onchange="loadData()">
         <option value="barcelona">Barcelona</option>
         <option value="madrid">Madrid</option>
       </select>
       <button onclick="loadData()">Cargar Inventario</button>
     </div>
 
-    <div id="inventory-container" class="container"></div>
-
-    <div class="footer">
-      <select id="type-select">
-        <option value="cables">Cables</option>
-        <option value="conectores">Conectores</option>
-      </select>
+    <div id="inventory-container" class="container">
+      <!-- Los inventarios se cargarán aquí -->
     </div>
 
-    <script src="js/script.js"></script>
+    <div class="footer">
+      <button id="reset-filters" onclick="resetFilters()">Resetear Filtros</button>
+      <input type="text" id="search" placeholder="Buscar">
+    </div>
+
+    <script src="script.js"></script>
   </body>
 </html>
