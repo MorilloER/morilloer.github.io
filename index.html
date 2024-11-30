@@ -19,28 +19,28 @@
         /* Estilo del botón de instalación */
         #installButton {
             display: none; /* Por defecto, no se muestra */
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: fixed; /* Se fija en relación a la ventana */
+            top: 20px; /* Espaciado desde la parte superior */
+            left: 50%; /* Centrado horizontalmente */
+            transform: translateX(-50%); /* Ajusta el botón para centrarlo */
             padding: 15px 30px;
-            background-color: #4fa9a5;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            z-index: 1000;
-            font-size: 18px;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            background-color: #4fa9a5; /* Color de fondo */
+            color: white; /* Color del texto */
+            border: none; /* Sin bordes */
+            border-radius: 25px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor al pasar */
+            z-index: 1000; /* Asegura que esté encima de otros elementos */
+            font-size: 18px; /* Tamaño del texto */
+            font-weight: bold; /* Texto en negrita */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
         }
         #installButton:hover {
-            background-color: #3c8984;
-            transform: translateX(-50%) scale(1.05);
+            background-color: #3c8984; /* Cambio de color al pasar el ratón */
+            transform: translateX(-50%) scale(1.05); /* Aumenta ligeramente el tamaño */
         }
         #installButton:active {
-            transform: translateX(-50%) scale(0.95);
+            transform: translateX(-50%) scale(0.95); /* Reduce el tamaño al hacer clic */
         }
     </style>
 </head>
