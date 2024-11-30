@@ -51,24 +51,33 @@
     </div>
 
     <script>
-        // Comprobación básica del iframe en navegadores móviles
-        const iframe = document.getElementById('appIframe');
-        const errorMessage = document.getElementById('errorMessage');
+        // Detectar si el navegador es Chrome en móvil
+        const isChromeMobile = /Chrome\/[0-9.]+ Mobile/i.test(navigator.userAgent);
 
-        iframe.addEventListener('load', () => {
-            try {
-                // Prueba básica para verificar que el iframe es accesible
-                const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-                if (!iframeDocument) {
-                    throw new Error("No se puede acceder al iframe.");
+        if (isChromeMobile) {
+            // Redirigir automáticamente a la aplicación
+            window.location.href = "https://script.google.com/macros/s/AKfycbyUL-OJWQSYy1o1GxlNDhum9BH4jKcUx3Iv_1i-wFQ-gpsZpRKZvgXPrjt1NdfTT8srRw/exec";
+        } else {
+            // Verificar que el iframe cargue correctamente
+            const iframe = document.getElementById('appIframe');
+            const errorMessage = document.getElementById('errorMessage');
+
+            iframe.addEventListener('load', () => {
+                try {
+                    // Intentar acceder al contenido del iframe (esto puede fallar en caso de cross-origin)
+                    const iframeDocument = iframe.contentWindow.document;
+                    if (iframeDocument) {
+                        console.log('Iframe cargado correctamente.');
+                    }
+                } catch (err) {
+                    console.warn('No se puede acceder al iframe debido a restricciones cross-origin.', err);
+                    errorMessage.style.display = 'flex';
+                    iframe.style.display = 'none';
                 }
-            } catch (err) {
-                console.error("Error al cargar el iframe:", err);
-                iframe.style.display = 'none'; // Oculta el iframe si hay un problema
-                errorMessage.style.display = 'flex'; // Muestra el mensaje de error
-            }
-        });
+            });
+        }
 
+        // Registrar el Service Worker
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker
                 .register("/sw.js")
@@ -78,4 +87,3 @@
     </script>
 </body>
 </html>
-
