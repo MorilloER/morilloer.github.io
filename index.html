@@ -37,6 +37,21 @@
             color: #999;
             font-style: italic;
         }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #4fa9a5;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #3b8f89;
+        }
     </style>
 </head>
 <body>
@@ -61,10 +76,13 @@
             app.innerHTML = `
                 <h1>Gestor de Inventarios</h1>
                 <p>La aplicación está lista para ser utilizada.</p>
-                <button onclick="initializeApp()">Iniciar</button>
+                <button id="startButton">Iniciar</button>
             `;
+
+            // Asociar el botón con la función initializeApp
+            const startButton = document.getElementById('startButton');
+            startButton.addEventListener('click', initializeApp);
         });
     </script>
 </body>
 </html>
-
