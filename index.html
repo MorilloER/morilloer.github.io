@@ -16,16 +16,65 @@
             height: 100%;
             border: none;
         }
+        /* Estilo del botón de instalación */
+        #installButton {
+            display: none; /* Por defecto, no se muestra */
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #4fa9a5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
     <iframe src="https://script.google.com/macros/s/AKfycbyUL-OJWQSYy1o1GxlNDhum9BH4jKcUx3Iv_1i-wFQ-gpsZpRKZvgXPrjt1NdfTT8srRw/exec"></iframe>
+    <!-- Botón personalizado para instalar la app -->
+    <button id="installButton">Instalar aplicación</button>
     <script>
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker
                 .register("/sw.js")
                 .then(() => console.log("Service Worker registrado"))
                 .catch((error) => console.error("Error al registrar el Service Worker:", error));
+        }
+
+        let deferredPrompt;
+        const installButton = document.getElementById('installButton');
+
+        // Detecta el evento 'beforeinstallprompt'
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); // Previene el banner nativo
+            deferredPrompt = e; // Guarda el evento para usarlo después
+            installButton.style.display = 'block'; // Muestra el botón personalizado
+        });
+
+        // Maneja el clic en el botón personalizado
+        installButton.addEventListener('click', () => {
+            installButton.style.display = 'none'; // Oculta el botón
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // Muestra el banner nativo
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('El usuario aceptó instalar la aplicación.');
+                    } else {
+                        console.log('El usuario rechazó instalar la aplicación.');
+                    }
+                    deferredPrompt = null; // Limpia el evento almacenado
+                });
+            }
+        });
+
+        // Opcional: Ocultar el botón si ya está instalada
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            installButton.style.display = 'none';
+            console.log('La aplicación ya está instalada.');
         }
     </script>
 </body>
