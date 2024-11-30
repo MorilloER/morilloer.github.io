@@ -1,23 +1,24 @@
+
 async function initializeApp() {
     const app = document.getElementById("app");
 
     try {
+        console.log("Intentando cargar inventarios.json...");
         const response = await fetch("inventarios.json");
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log("Datos cargados correctamente:", data);
+
         app.innerHTML = `
             <h1>Gestor de Inventarios</h1>
             <p>Inventario cargado con éxito. Selecciona una opción para continuar.</p>
             <button onclick="mostrarInventario()">Mostrar Inventario</button>
         `;
-
-        // Guarda los datos en una variable global si es necesario
-        window.inventarios = data;
     } catch (error) {
-        console.error("Error al cargar el archivo JSON:", error);
+        console.error("Error al cargar los datos:", error);
         app.innerHTML = `
             <h1>Error</h1>
             <p>No se pudieron cargar los datos. Inténtalo más tarde.</p>
@@ -25,48 +26,9 @@ async function initializeApp() {
     }
 }
 
+// Función de ejemplo para manejar el botón
 function mostrarInventario() {
-    const app = document.getElementById("app");
-    const inventarios = window.inventarios || [];
-
-    if (inventarios.length === 0) {
-        app.innerHTML = `
-            <h1>Error</h1>
-            <p>No hay datos disponibles para mostrar.</p>
-        `;
-        return;
-    }
-
-    app.innerHTML = `
-        <h1>Inventario</h1>
-        <ul>
-            ${inventarios.map(item => `<li>${item.nombre} - ${item.cantidad}</li>`).join("")}
-        </ul>
-    `;
+    alert("Funcionalidad para mostrar inventario aún no implementada.");
 }
 
-
-
-function initializeApp() {
-    fetch('./inventarios.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('No se pudieron cargar los datos del inventario.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Inventario cargado:', data);
-            document.getElementById('app').innerHTML = `
-                <h1>Inventario</h1>
-                <ul>${data.map(item => `<li>${item.Referencia} - ${item.Descripcion} (${item.Localizacion})</li>`).join('')}</ul>
-            `;
-        })
-        .catch(error => {
-            document.getElementById('app').innerHTML = `
-                <h1>Error</h1>
-                <p>No se pudieron cargar los datos. Inténtalo más tarde.</p>
-            `;
-            console.error('Error cargando inventario:', error);
-        });
-}
+initializeApp();
